@@ -6,7 +6,7 @@ import $ from 'jquery';
 
 
 const CHANGE_EVENT = 'change';
-const BASE_URL = 'http://api.randomuser.me/';
+const BASE_URL = 'https://api.randomuser.me/';
 
 let contactList = [];
 let profile = null;
