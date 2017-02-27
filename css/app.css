@@ -98,6 +98,11 @@ input[type="checkbox"] {
 .home-content-wrapper .credentials {
     font-weight: bold;
 }
+
+.home-content-wrapper .base-url{
+    width: 80%;
+}
+
 .search-box-wrapper {
     text-align: center;
 }

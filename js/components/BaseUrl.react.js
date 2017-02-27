@@ -40,6 +40,7 @@ export default class BaseUrl extends Component {
           <input
             type="text"
             name="baseUrl"
+            className="base-url"
             value={this.state.baseUrl}
             onKeyDown={this.onKeyDown}
             onChange={this.onInputChange}
