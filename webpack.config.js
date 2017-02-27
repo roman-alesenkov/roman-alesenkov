@@ -15,6 +15,7 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader?presets[]=es2015&presets[]=stage-0&presets[]=react' }
         ]
     },
+
     eslint: {
         failOnWarning: false,
         failOnError: false
