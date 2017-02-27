@@ -5,7 +5,8 @@
   "main": "js/index.js",
   "scripts": {
     "start": "webpack-dev-server --port 8081 --inline --content-base .",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "postinstall": "webpack -p --config ./webpack.prod.config.js --progress"
   },
   "dependencies": {
     "flux": "^2.0.1",
