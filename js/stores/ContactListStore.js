@@ -7,7 +7,8 @@ import $ from 'jquery';
 
 const CHANGE_EVENT = 'change';
 //let BASE_URL = 'https://node-api-rhaibevozn.now.sh/api';
-let BASE_URL = 'http://localhost:8080/api';
+//let BASE_URL = 'http://localhost:8080/api';
+let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
 
 let contactList = [];
 let profile = null;
