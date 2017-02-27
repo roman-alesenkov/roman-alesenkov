@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import TextInput from './TextInput.react';
+import RadioInput from './RadioInput.react';
 import ContactListStore from '../stores/ContactListStore';
 import ContactActions from '../actions/ContactActions';
 
@@ -96,9 +97,15 @@ export default class Profile extends Component {
               />
           </div>
 
-        <div className="info-field">
-            {this.state.profile.sex}
-        </div>
+          <div>
+              <label>sex: </label>
+              <RadioInput
+                  className="edit"
+                  type="sex"
+                  onChange={this.onEditableProfileTextChange}
+                  value={this.state.profile.sex}
+              />
+          </div>
 
         <div className="note">Double-click on first name to edit it (only for logged users).</div>
 

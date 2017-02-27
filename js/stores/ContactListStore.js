@@ -70,7 +70,7 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
     }
 
     editableProfile.sex = editableProfile.sex || 'male';
-    debugger;
+
     $.ajax({
       url: url,
       type: type,
