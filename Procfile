@@ -1,1 +1,1 @@
-web: webpack-dev-server --port 8081 --inline --content-base .
+web: npm run build
