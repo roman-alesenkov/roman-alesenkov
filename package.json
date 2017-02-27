@@ -14,7 +14,7 @@
     "object-assign": "^4.1.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "react-router": "^2.0.0"
+    "react-router": "^2.0.0",
     "babel-core": "^6.5.1",
     "babel-loader": "^6.2.2",
     "babel-plugin-transform-class-properties": "^6.10.2",
