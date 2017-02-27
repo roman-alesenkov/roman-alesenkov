@@ -4,7 +4,7 @@
   "description": "React contacts application.",
   "main": "js/index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --content-base ."
+    "start": "webpack-dev-server --port 8081 --inline --content-base ."
   },
   "dependencies": {
     "flux": "^2.0.1",

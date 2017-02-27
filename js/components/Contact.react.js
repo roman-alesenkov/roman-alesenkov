@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import ContactActions from '../actions/ContactActions';
-
+import ContactListStore from '../stores/ContactListStore';
 
 export default class Contact extends Component {
 
@@ -11,32 +11,31 @@ export default class Contact extends Component {
   }
 
   onDestroyClick = () => {
-    ContactActions.destroy(this.props.contact.email);
+    ContactListStore.destroyById(this.props.contact.id);
   }
 
   render() {
     const contact = this.props.contact;
+    const index = this.props.index;
 
-    const destroyButton = this.props.isLogged ? (<button className="destroy" onClick={this.onDestroyClick} />) : '';
     return (
       <li
-        key={contact.email}
+        key={contact.id}
       >
         <div className="contact">
-          <img src={contact.picture.medium} alt="" />
           <div className="contact-info">
-            <Link to={'contacts/' + contact.login.username}> {contact.name.first} {contact.name.last} </Link>
 
-            <div>
-                        {contact.email}
+            <div className="contact-index">
+              {index + 1}
             </div>
-            <div>
-                        {contact.phone}
-            </div>
+
+            <Link to={'contacts/' + contact.id}> {contact.firstName} {contact.lastName} </Link>
           </div>
+
           <div className="destroy-button-wrapper">
-        {destroyButton}
+            <button className="destroy" onClick={this.onDestroyClick} />
           </div>
+
         </div>
       </li>
     );

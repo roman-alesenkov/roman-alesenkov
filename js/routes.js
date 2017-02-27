@@ -10,7 +10,7 @@ const routes = (
     <Route path="/" component={App}>
       <IndexRoute component={Home} />
       <Route path="/contacts" component={ContactApp} />
-      <Route path="/contacts/:username" component={Profile} />
+      <Route path="/contacts/:id" component={Profile} />
     </Route>
 );
 

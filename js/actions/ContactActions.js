@@ -4,10 +4,17 @@ import ContactConstants from '../constants/ContactConstants';
 
 const ContactActions = {
 
-  destroy(email) {
+  saveBaseUrl(baseUrl) {
+    AppDispatcher.dispatch({
+      actionType: ContactConstants.BASE_URL_SAVE,
+      baseUrl,
+    });
+  },
+
+  destroy(id) {
     AppDispatcher.dispatch({
       actionType: ContactConstants.CONTACT_DESTROY,
-      email,
+      id,
     });
   },
 
@@ -34,13 +41,19 @@ const ContactActions = {
     });
   },
 
-  updateText(email, text) {
+  updateEditableProfileText(type, value) {
     AppDispatcher.dispatch({
-      actionType: ContactConstants.CONTACT_UPDATE_TEXT,
-      email,
-      text,
+      actionType: ContactConstants.CONTACT_UPDATE_EDITABLE_TEXT,
+      type,
+      value,
     });
   },
+
+  saveProfile(){
+    AppDispatcher.dispatch({
+      actionType: ContactConstants.CONTACT_SAVE
+    });
+  }
 
 };
 

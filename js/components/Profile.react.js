@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import TextInput from './TextInput.react';
 import ContactListStore from '../stores/ContactListStore';
-import AuthStore from '../stores/AuthStore';
 import ContactActions from '../actions/ContactActions';
 
 
@@ -14,101 +13,96 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-    ContactListStore.addChangeListener(this.onChange);
-    AuthStore.addChangeListener(this.onLoggedChange);
-    ContactListStore.fetchUserByUsername(this.props.params.username);
+    ContactListStore.addChangeListener(this.setProfileState);
+    ContactListStore.fetchUserById(this.props.params.id);
   }
 
   componentWillUnmount() {
-    ContactListStore.removeChangeListener(this.onChange);
-    AuthStore.removeChangeListener(this.onLoggedChange);
+    ContactListStore.removeChangeListener(this.setProfileState);
   }
 
-  onLoggedChange = () => {
-    this.setState({
-      isLogged: AuthStore.isLogged(),
-    });
+  onEditableProfileTextChange = (type, value) => {
+    ContactActions.updateEditableProfileText(type, value);
   }
 
-  onChange = () => {
-    this.setState(this.getProfileState());
+  onSave = () => {
+    ContactActions.saveProfile();
   }
 
-  onDoubleClick = () => {
-    this.setState({ isEditing: true });
-  }
-
-  onSave = (text) => {
-    ContactActions.updateText(this.state.profile.email, text);
-    this.setState({ isEditing: false });
+  setProfileState = () => {
+      this.setState(this.getProfileState);
   }
 
   getProfileState = () => {
     return {
-      profile: ContactListStore.getUserByUsername(
-        this.props.params.username
-      ) || { name: {}, picture: {}, location: {} },
-      isEditing: false,
-      isLogged: AuthStore.isLogged(),
+      profile: ContactListStore.getCurrentProfile() || {}
     };
   }
 
   render() {
-    let input;
-
-    if (this.state.isEditing && this.state.isLogged) {
-      input = (
-        <TextInput
-          className="edit"
-          onSave={this.onSave}
-          value={this.state.profile.name.first}
-        />
-      );
-    } else {
-      input = (
-        <span onDoubleClick={this.onDoubleClick}>{this.state.profile.name.first}</span>
-      );
-    }
 
     return (
       <div className="profile-content">
 
-        <div className="first-last-name">
-          <h3>
-            {input}
-            <span> {this.state.profile.name.last}</span>
+        <div>
+              <label>First Name: </label>
+               <TextInput
+                  className="edit"
+                  type="firstName"
+                  onChange={this.onEditableProfileTextChange}
+                  value={this.state.profile.firstName}
+                  autoFocus="true"
+                />
 
-          </h3>
         </div>
 
-        <img src={this.state.profile.picture.large} alt="" />
-
-        <div className="info-field">
-            {this.state.profile.email}
+          <div>
+              <label>Last Name: </label>
+              <TextInput
+                  className="edit"
+                  type="lastName"
+                  onChange={this.onEditableProfileTextChange}
+                  value={this.state.profile.lastName}
+              />
         </div>
 
-        <div className="info-field">
-            {this.state.profile.phone}
-        </div>
+          <div>
+              <label>Age: </label>
+              <TextInput
+                  className="edit"
+                  type="age"
+                  onChange={this.onEditableProfileTextChange}
+                  value={this.state.profile.age}
+              />
+          </div>
+
+          <div>
+              <label>Income in $: </label>
+              <TextInput
+                  className="edit"
+                  type="income"
+                  onChange={this.onEditableProfileTextChange}
+                  value={this.state.profile.income}
+              />
+          </div>
+
+          <div>
+              <label>city: </label>
+              <TextInput
+                  className="edit"
+                  type="city"
+                  onChange={this.onEditableProfileTextChange}
+                  value={this.state.profile.city}
+              />
+          </div>
 
         <div className="info-field">
-            {this.state.profile.location.street}
-        </div>
-
-        <div className="info-field">
-            {this.state.profile.location.city}
-        </div>
-
-        <div className="info-field">
-            {this.state.profile.location.state}
-        </div>
-
-        <div className="info-field">
-            {this.state.profile.location.postcode}
+            {this.state.profile.sex}
         </div>
 
         <div className="note">Double-click on first name to edit it (only for logged users).</div>
 
+        <button onClick={this.onSave}>SAVE</button>
       </div>
     );
   }

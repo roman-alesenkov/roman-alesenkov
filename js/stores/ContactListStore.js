@@ -6,150 +6,97 @@ import $ from 'jquery';
 
 
 const CHANGE_EVENT = 'change';
-const BASE_URL = 'https://api.randomuser.me/';
+//let BASE_URL = 'https://node-api-rhaibevozn.now.sh/api';
+let BASE_URL = 'http://localhost:8080/api';
 
 let contactList = [];
 let profile = null;
+let editableProfile = {};
 
-let searchString = '';
-let sortCriteria = {
-  name: null,
-  ascendant: null,
-};
-
-let gender = {
-  male: false,
-  female: false,
-};
-
-function filter(contactList) {
-  let filteredList = contactList;
-
-  //  filter by searchString
-  const SEARCH_FILTERS = [['name', 'first'], ['name', 'last'], 'email', ['location', 'city']];
-  if (searchString.length > 0) {
-    let filteredBySearch = [];
-
-    filteredList.forEach((filteredItem) => {
-      SEARCH_FILTERS.forEach((searchFilter) => {
-        let filteredItemProperty;
-        if (Array.isArray(searchFilter)) {
-          filteredItemProperty = filteredItem[searchFilter[0]][searchFilter[1]];
-        } else {
-          filteredItemProperty = filteredItem[searchFilter];
-        }
-        if (filteredItemProperty.indexOf(searchString) !== -1) {
-          filteredBySearch.push(filteredItem);
-        }
-      });
-    });
-
-    filteredList = filteredBySearch;
-  }
-
-  //  filter by gender
-
-  if (gender.male !== gender.female) {
-    if (gender.male) {
-      filteredList = filteredList.filter((contact) => {
-        return contact.gender === 'male';
-      });
-    } else {
-      filteredList = filteredList.filter((contact) => {
-        return contact.gender === 'female';
-      });
-    }
-  }
-
-  return filteredList;
-}
-
-function sort(listOfContacts) {
-  let sortedList = listOfContacts;
-
-  if (sortCriteria.name === 'name') {
-    if (sortCriteria.ascendant) {
-      sortedList = sortedList.sort((a, b) => { return (a.email > b.email) ? 1 : ((b.email > a.email) ? -1 : 0); } );
-    } else {
-      sortedList = sortedList.sort((a, b) => { return (a.email < b.email) ? 1 : ((b.email < a.email) ? -1 : 0); } );
-    }
-  }
-
-  return sortedList;
-}
-
-function destroy(email) {
-  let updatedContactList = [];
-
-  contactList.forEach((contact) => {
-    if (contact.email !== email) {
-      updatedContactList.push(contact);
-    }
-  });
-
-  contactList = updatedContactList;
-}
-
-function updateByEmail(email, text) {
-  if (contactList.length) {
-    let updatedContactList = [];
-
-    contactList.forEach((contact) => {
-      if (contact.email === email) {
-        contact.name.first = text;
-      }
-      updatedContactList.push(contact);
-    });
-
-    contactList = updatedContactList;
-  } else {
-    profile.name.first = text;
-  }
+function updateEditableProfileText(type, value) {
+  editableProfile[type] = value;
 }
 
 const ContactListStore = assign({}, EventEmitter.prototype, {
 
   getAll() {
-    return sort(filter(contactList));
+    return contactList;
+  },
+
+  clearProfileInfo() {
+    editableProfile = {};
+    profile = {};
   },
 
   fetchAll() {
-    if (contactList.length) {
-      return this.getAll();
-    } else {
       $.ajax({
-        url: `${BASE_URL}?results=20&inc=login,name,gender,email,location,picture,phone`,
+        url: BASE_URL + '/users',
+        withCredentials: true,
         dataType: 'json',
         success: function (data) {
-          contactList = data.results;
+          contactList = data;
           this.emit(CHANGE_EVENT);
         }.bind(this)
       });
-    }
   },
 
-  getUserByUsername(username) {
-    contactList.forEach((contact) => {
-      if (contact.login.username === username) {
-        profile = contact;
-      }
-    });
+  getCurrentProfile() {
     return profile;
   },
 
-  fetchUserByUsername() {
-    if (profile) {
-      return profile;
+  destroyById(id) {
+    $.ajax({
+      type: 'DELETE',
+      url: BASE_URL + '/user/' + id,
+      withCredentials: true,
+      dataType: 'json',
+      success: function (data) {
+        this.fetchAll();
+      }.bind(this)
+    });
+  },
+
+  saveProfile() {
+    let url;
+    let type;
+
+    if (editableProfile.id) {
+      url = BASE_URL + '/user/' + editableProfile.id;
+      type = 'PUT';
     } else {
-      $.ajax({
-        url: `${BASE_URL}?results=1&inc=login,name,gender,email,location,picture,phone`,
-        dataType: 'json',
-        success: function (data) {
-          profile = data.results[0];
-          this.emit(CHANGE_EVENT);
-        }.bind(this),
-      });
+      url = BASE_URL + '/users';
+      type = 'POST';
     }
+
+    editableProfile.sex = editableProfile.sex || 'male';
+    debugger;
+    $.ajax({
+      url: url,
+      type: type,
+      dataType: 'json',
+      data: editableProfile,
+      success: function () {
+        if (!editableProfile.id) {
+          this.clearProfileInfo();
+        }
+        this.emit(CHANGE_EVENT);
+      }.bind(this)
+    });
+  },
+
+  fetchUserById(id) {
+    this.clearProfileInfo();
+    this.emit(CHANGE_EVENT);
+    $.ajax({
+      //url: `${BASE_URL}?results=1&inc=login,name,gender,email,location,picture,phone`,
+      url: BASE_URL + '/user/' + id,
+      dataType: 'json',
+      success: function (data) {
+        profile = data;
+        editableProfile = profile;
+        this.emit(CHANGE_EVENT);
+      }.bind(this)
+    });
   },
 
   getFilterState() {
@@ -157,6 +104,18 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
       gender,
       searchString,
     };
+  },
+
+  getBaseUrl() {
+    return BASE_URL;
+  },
+
+  saveBaseUrl(baseUrl) {
+    BASE_URL = baseUrl;
+  },
+
+  downloadUserList() {
+    window.open(BASE_URL + '/reports/users');
   },
 
   emitChange() {
@@ -200,13 +159,22 @@ AppDispatcher.register((action) => {
       break;
 
     case ContactConstants.CONTACT_DESTROY:
-      destroy(action.email);
+      destroyById(action.id);
       ContactListStore.emitChange();
       break;
 
-    case ContactConstants.CONTACT_UPDATE_TEXT:
-      updateByEmail(action.email, action.text);
+    case ContactConstants.CONTACT_UPDATE_EDITABLE_TEXT:
+      updateEditableProfileText(action.type, action.value);
+      break;
+
+    case ContactConstants.CONTACT_SAVE:
+      ContactListStore.saveProfile();
       ContactListStore.emitChange();
+      break;
+
+    case ContactConstants.BASE_URL_SAVE:
+      ContactListStore.saveBaseUrl(action.baseUrl);
+      ContactListStore.fetchAll();
       break;
 
     default:

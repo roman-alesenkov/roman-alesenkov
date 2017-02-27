@@ -142,6 +142,13 @@ input[type="checkbox"] {
     border-top: solid 1px #dfd2d2;
 }
 
+.create-new {
+    margin-left: 20px;
+}
+
+.download-button {
+    margin-left: 20px;
+}
 .contact {
     display: flex;
 }
@@ -149,9 +156,23 @@ input[type="checkbox"] {
 .contact .contact-info {
     padding: 0 12px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     flex-grow: 1;
+    margin: auto 0;
+}
+
+.contact .contact-info a,
+.contact .contact-info a:visited,
+.contact .contact-info a:focus,
+.contact .contact-info a:active {
+    color: #486D88;
+}
+
+.contact .contact-info a:hover {
+    color: #123752;
+}
+
+.contact-index {
+    padding: 0 12px;
 }
 
 .destroy-button-wrapper {
