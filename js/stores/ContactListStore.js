@@ -7,8 +7,8 @@ import $ from 'jquery';
 
 const CHANGE_EVENT = 'change';
 //let BASE_URL = 'https://node-api-rhaibevozn.now.sh/api';
-//let BASE_URL = 'http://localhost:8080/api';
-let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
+let BASE_URL = 'http://localhost:8080/api';
+//let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
 
 let contactList = [];
 let profile = null;
@@ -75,6 +75,7 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
       url: url,
       type: type,
       dataType: 'json',
+      contentType: 'application/json',
       data: editableProfile,
       success: function () {
         if (!editableProfile.id) {
@@ -92,7 +93,6 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
       //url: `${BASE_URL}?results=1&inc=login,name,gender,email,location,picture,phone`,
       url: BASE_URL + '/user/' + id,
       dataType: 'json',
-      contentType: 'application/json',
       success: function (data) {
         profile = data;
         editableProfile = profile;
