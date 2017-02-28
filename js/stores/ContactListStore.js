@@ -92,6 +92,7 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
       //url: `${BASE_URL}?results=1&inc=login,name,gender,email,location,picture,phone`,
       url: BASE_URL + '/user/' + id,
       dataType: 'json',
+      contentType: 'application/json',
       success: function (data) {
         profile = data;
         editableProfile = profile;
