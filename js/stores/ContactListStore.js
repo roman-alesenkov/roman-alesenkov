@@ -76,7 +76,7 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
       type: type,
       dataType: 'json',
       contentType: 'application/json',
-      data: editableProfile,
+      data: JSON.stringify(editableProfile),
       success: function () {
         if (!editableProfile.id) {
           this.clearProfileInfo();
