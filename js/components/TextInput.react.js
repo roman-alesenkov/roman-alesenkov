@@ -12,7 +12,7 @@ export default class TextInput extends Component {
   componentWillReceiveProps(nextProps) {
     // You don't have to do this check first, but it can help prevent an unneeded render
     if (nextProps.value !== this.state.value) {
-      this.setState({ value: nextProps.value });
+      this.setState({ value: nextProps.value || '' });
     }
   }
 
@@ -26,7 +26,6 @@ export default class TextInput extends Component {
 
   render() {
 
-    let focus = false;
     return (
       <input
         className={this.props.className}

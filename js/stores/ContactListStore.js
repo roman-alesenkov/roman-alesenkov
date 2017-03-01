@@ -6,6 +6,7 @@ import $ from 'jquery';
 
 
 const CHANGE_EVENT = 'change';
+const CONTACT_CREATED_EVENT = 'CONTACT_CREATED'
 //let BASE_URL = 'https://node-api-rhaibevozn.now.sh/api';
 //let BASE_URL = 'http://localhost:8080/api';
 let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
@@ -81,14 +82,19 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
         if (!editableProfile.id) {
           this.clearProfileInfo();
         }
+
         this.emit(CHANGE_EVENT);
+
+        if (!editableProfile.id) {
+          this.emit(CONTACT_CREATED_EVENT);
+        }
+
       }.bind(this)
     });
   },
 
   fetchUserById(id) {
     this.clearProfileInfo();
-    this.emit(CHANGE_EVENT);
     $.ajax({
       //url: `${BASE_URL}?results=1&inc=login,name,gender,email,location,picture,phone`,
       url: BASE_URL + '/user/' + id,
@@ -136,6 +142,14 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
    */
   removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
+  },
+
+  addContactCreatedListener(callback) {
+    this.on(CONTACT_CREATED_EVENT, callback);
+  },
+
+  removeContactCreatedListener(callback) {
+    this.removeListener(CONTACT_CREATED_EVENT, callback);
   },
 });
 

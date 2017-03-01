@@ -15,11 +15,13 @@ export default class Profile extends Component {
 
   componentDidMount() {
     ContactListStore.addChangeListener(this.setProfileState);
+    ContactListStore.addContactCreatedListener(this.showContactCreatedMessage);
     ContactListStore.fetchUserById(this.props.params.id);
   }
 
   componentWillUnmount() {
     ContactListStore.removeChangeListener(this.setProfileState);
+    ContactListStore.removeContactCreatedListener(this.showContactCreatedMessage);
   }
 
   onEditableProfileTextChange = (type, value) => {
@@ -36,11 +38,20 @@ export default class Profile extends Component {
 
   getProfileState = () => {
     return {
-      profile: ContactListStore.getCurrentProfile() || {}
+      profile: ContactListStore.getCurrentProfile() || {},
+      contactCreatedMessageIsShown: false
     };
   }
 
+  showContactCreatedMessage = () => {
+      this.setState({contactCreatedMessageIsShown : true});
+  }
+
   render() {
+
+    let contactCreatedMessage = <div>User has been successfully created!</div>;
+
+    contactCreatedMessage = this.state.contactCreatedMessageIsShown ? contactCreatedMessage : '';
 
     return (
       <div className="profile-content">
@@ -110,6 +121,9 @@ export default class Profile extends Component {
         <div className="note">Double-click on first name to edit it (only for logged users).</div>
 
         <button onClick={this.onSave}>SAVE</button>
+<br/>
+          {contactCreatedMessage}
+    <br/>
       </div>
     );
   }
