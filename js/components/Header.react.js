@@ -12,6 +12,7 @@ const Header = function () {
       <ul role="nav" className="header-nav">
         <li><Link to="/" activeClassName="active" className="link">Home</Link></li>
         <li><Link to="/contacts" activeClassName="active" className="link">Contacts</Link></li>
+        <li><Link to="/contact-us" activeClassName="active" className="link">Contact us</Link></li>
       </ul>
     </div>
 );

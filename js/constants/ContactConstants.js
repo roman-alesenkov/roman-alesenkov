@@ -1,7 +1,6 @@
 import keyMirror from 'keymirror';
 
 module.exports = keyMirror({
-  BASE_URL_SAVE: null,
   CONTACT_SAVE: null,
   CONTACT_COMPLETE: null,
   CONTACT_DESTROY: null,

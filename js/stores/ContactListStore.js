@@ -1,6 +1,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import { EventEmitter } from 'events';
 import ContactConstants from '../constants/ContactConstants';
+import ConfigConstants from '../constants/ConfigConstants';
 import assign from 'object-assign';
 import $ from 'jquery';
 
@@ -9,7 +10,8 @@ const CHANGE_EVENT = 'change';
 const CONTACT_CREATED_EVENT = 'CONTACT_CREATED'
 //let BASE_URL = 'https://node-api-rhaibevozn.now.sh/api';
 //let BASE_URL = 'http://localhost:8080/api';
-let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
+//let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
+let BASE_URL = ConfigConstants.BASE_URL;
 
 let contactList = [];
 let profile = null;
@@ -119,6 +121,7 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
   },
 
   saveBaseUrl(baseUrl) {
+    ConfigConstants.setBaseUrl(baseUrl);
     BASE_URL = baseUrl;
   },
 
