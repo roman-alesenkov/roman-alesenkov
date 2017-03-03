@@ -78,9 +78,9 @@ export default class Profile extends Component {
               <label>E-mail: </label>
                <TextInput
                   className="edit"
-                  type="email"
+                  type="from"
                   onChange={this.onEditableContactUsTextChange}
-                  value={this.state.formData.email}
+                  value={this.state.formData.from}
                 />
         </div>
 

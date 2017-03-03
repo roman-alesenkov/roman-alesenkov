@@ -23,7 +23,7 @@ function clearEditableFormData() {
   editableFormData = {
     subject: '',
     body: '',
-    email: ''
+    from: ''
   };
 }
 
