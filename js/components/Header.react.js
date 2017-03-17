@@ -13,6 +13,7 @@ const Header = function () {
         <li><Link to="/" activeClassName="active" className="link">Home</Link></li>
         <li><Link to="/contacts" activeClassName="active" className="link">Contacts</Link></li>
         <li><Link to="/contact-us" activeClassName="active" className="link">Contact us</Link></li>
+        <li><Link to="/reports" activeClassName="active" className="link">Reports</Link></li>
       </ul>
     </div>
 );

@@ -35,7 +35,6 @@ export default class MainSection extends Component {
       <section id="main">
 
         <Link className="create-new" onClick={this.onCreateNew} to={'contacts/new'}> Create New </Link>
-        <button className="download-button" onClick={this.downloadUserList}>Download user list</button>
         <ul id="contact-list">{contacts}</ul>
 
       </section>
