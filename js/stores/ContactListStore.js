@@ -17,11 +17,26 @@ let contactList = [];
 let profile = null;
 let editableProfile = {};
 
+let params = {
+  offset: 0,
+  limit: 5
+};
+
+const limitValues = [5, 10, 20];
+
 function updateEditableProfileText(type, value) {
   editableProfile[type] = value;
 }
 
 const ContactListStore = assign({}, EventEmitter.prototype, {
+
+  setLimit(limit) {
+    params.limit = limit;
+  },
+
+  getLimitValues() {
+    return limitValues;
+  },
 
   getAll() {
     return contactList;
@@ -37,6 +52,7 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
         url: BASE_URL + '/users',
         withCredentials: true,
         dataType: 'json',
+        data: params,
         success: function (data) {
           contactList = data;
           this.emit(CHANGE_EVENT);
@@ -196,6 +212,9 @@ AppDispatcher.register((action) => {
       ContactListStore.fetchAll();
       break;
 
+    case ContactConstants.LIMIT_CHANGE:
+      ContactListStore.setLimit(action.limit);
+      ContactListStore.fetchAll();
     default:
 
   }

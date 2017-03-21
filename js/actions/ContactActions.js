@@ -53,6 +53,13 @@ const ContactActions = {
     AppDispatcher.dispatch({
       actionType: ContactConstants.CONTACT_SAVE
     });
+  },
+
+  changeLimit(limit){
+    AppDispatcher.dispatch({
+      actionType: ContactConstants.LIMIT_CHANGE,
+      limit
+    });
   }
 
 };

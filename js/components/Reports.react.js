@@ -38,7 +38,6 @@ export default class Reports extends Component {
     render() {
 
         let reportList = this.state.reports;
-debugger
         let reports = reportList.map((report, i) => {
             return (
                 <Report key={report.type} index={i} report={report} onDownloadClick={this.onDownloadClick}/>

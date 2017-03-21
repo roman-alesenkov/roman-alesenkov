@@ -78,6 +78,22 @@ input[type="checkbox"] {
     color: #00bdea;
 }
 
+#main .header {
+    display: flex;
+    margin: 0 20px;
+    justify-content: space-between;
+}
+
+#main .header .limit {
+    margin: 0;
+    color: #00667E;
+}
+
+#main .header .limit span{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
 .home-content-wrapper {
     padding: 0 20px 20px 20px;
     text-align: center;
