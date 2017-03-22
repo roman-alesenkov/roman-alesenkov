@@ -19,7 +19,8 @@ let editableProfile = {};
 
 let params = {
   offset: 0,
-  limit: 5
+  limit: 5,
+  inc: 'id,firstName,lastName'
 };
 
 let countAll = 0;
