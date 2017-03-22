@@ -57,8 +57,9 @@ export default class MainSection extends Component {
     let pagesValues = Array(numberOfPages).fill().map((e,i)=>i+1);
 
     contacts = contactList.map((contact, i) => {
+      let index = (this.state.page - 1) * this.state.limit + i;
       return (
-        <Contact key={contact.id} contact={contact} index={i} />
+        <Contact key={contact.id} contact={contact} index={index} />
       );
     });
 
