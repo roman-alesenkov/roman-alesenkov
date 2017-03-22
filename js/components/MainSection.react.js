@@ -16,17 +16,24 @@ export default class MainSection extends Component {
   }
 
   componentDidMount() {
+    ContactListStore.addChangeListener(this.setMainSectionState);
+  }
+
+  componentWillUnmount() {
+    ContactListStore.removeChangeListener(this.setMainSectionState);
+  }
+
+  setMainSectionState = () => {
     this.setState(this.getMainSectionState);
   }
 
   getMainSectionState = () => {
     return {
-      limitValues: ContactListStore.getLimitValues() || []
+      limitValues: ContactListStore.getLimitValues() || [],
+      countAll: ContactListStore.getCountAll() || 0,
+      limit: ContactListStore.getLimit() || 0,
+      page: ContactListStore.getPage() || 1
     }
-  }
-
-  downloadUserList = () => {
-    ContactListStore.downloadUserList();
   }
 
   onCreateNew = () => {
@@ -37,11 +44,17 @@ export default class MainSection extends Component {
     ContactActions.changeLimit(limit);
   }
 
+  onPageChange = (page) => {
+    ContactActions.changePage(page);
+  }
+
   render() {
     const contactList = this.props.contactList;
     let contacts = [];
     let limits = [];
-
+    let pages = [];
+    let numberOfPages = Math.ceil(this.state.countAll / this.state.limit);
+    let pagesValues = Array(numberOfPages).fill().map((e,i)=>i+1);
 
     contacts = contactList.map((contact, i) => {
       return (
@@ -50,18 +63,31 @@ export default class MainSection extends Component {
     });
 
     limits = this.state.limitValues.map((limit) => {
+      let className = limit === this.state.limit ? 'active' : '';
       return (
-          <LimitItem onLimitChange={this.onLimitChange} key={limit} value={limit} />
+          <LimitItem onLimitChange={this.onLimitChange} key={limit} value={limit} className={className} />
+      )
+    });
+
+    pages = pagesValues.map((page) => {
+      let className = page === this.state.page ? 'active' : '';
+      return (
+          <LimitItem onLimitChange={this.onPageChange} key={page} value={page} className={className} />
       )
     });
 
     return (
       <section id="main">
+        <Link className="create-new" onClick={this.onCreateNew} to={'contacts/new'}> Create New </Link>
         <div className="header">
-          <Link className="create-new" onClick={this.onCreateNew} to={'contacts/new'}> Create New </Link>
-          <div className="limit">{limits}</div>
+
+        <div className="found-records"> Found {this.state.countAll} records.</div>
+          <span>
+          Records per page: <span className="limit">{limits}</span>
+            </span>
         </div>
         <ul id="contact-list">{contacts}</ul>
+        <div className="pagination">{pages}</div>
 
       </section>
     );

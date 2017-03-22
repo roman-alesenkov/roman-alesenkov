@@ -13,6 +13,7 @@ module.exports = keyMirror({
   CONTACT_SORT: null,
   CONTACT_CREATED: null,
   LIMIT_CHANGE: null,
+  PAGE_CHANGE: null,
   AUTH_LOGIN: null,
   AUTH_LOGOUT: null,
 });

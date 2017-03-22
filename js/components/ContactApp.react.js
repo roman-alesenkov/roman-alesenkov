@@ -7,7 +7,7 @@ import ContactListStore from '../stores/ContactListStore';
 
 function getContactListState() {
   return {
-    contactList: ContactListStore.getAll(),
+    contactList: ContactListStore.getAll() || [],
   };
 }
 

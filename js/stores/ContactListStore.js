@@ -7,7 +7,7 @@ import $ from 'jquery';
 
 
 const CHANGE_EVENT = 'change';
-const CONTACT_CREATED_EVENT = 'CONTACT_CREATED'
+const CONTACT_CREATED_EVENT = 'CONTACT_CREATED';
 //let BASE_URL = 'https://node-api-rhaibevozn.now.sh/api';
 //let BASE_URL = 'http://localhost:8080/api';
 //let BASE_URL = 'https://floating-dusk-14900.herokuapp.com/api';
@@ -22,6 +22,8 @@ let params = {
   limit: 5
 };
 
+let countAll = 0;
+
 const limitValues = [5, 10, 20];
 
 function updateEditableProfileText(type, value) {
@@ -30,8 +32,24 @@ function updateEditableProfileText(type, value) {
 
 const ContactListStore = assign({}, EventEmitter.prototype, {
 
+  getCountAll() {
+    return countAll;
+  },
+
+  getLimit() {
+    return params.limit;
+  },
+
   setLimit(limit) {
     params.limit = limit;
+  },
+
+  setPage(page) {
+    params.offset = (page - 1)* params.limit;
+  },
+
+  getPage(){
+    return (params.offset / params.limit) + 1;
   },
 
   getLimitValues() {
@@ -54,7 +72,8 @@ const ContactListStore = assign({}, EventEmitter.prototype, {
         dataType: 'json',
         data: params,
         success: function (data) {
-          contactList = data;
+          contactList = data.items || [];
+          countAll = data.countAll || 0;
           this.emit(CHANGE_EVENT);
         }.bind(this)
       });
@@ -214,6 +233,12 @@ AppDispatcher.register((action) => {
 
     case ContactConstants.LIMIT_CHANGE:
       ContactListStore.setLimit(action.limit);
+      ContactListStore.setPage(1);
+      ContactListStore.fetchAll();
+    break;
+
+    case ContactConstants.PAGE_CHANGE:
+      ContactListStore.setPage(action.page);
       ContactListStore.fetchAll();
     default:
 

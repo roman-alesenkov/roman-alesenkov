@@ -60,6 +60,13 @@ const ContactActions = {
       actionType: ContactConstants.LIMIT_CHANGE,
       limit
     });
+  },
+
+  changePage(page){
+    AppDispatcher.dispatch({
+      actionType: ContactConstants.PAGE_CHANGE,
+      page
+    });
   }
 
 };

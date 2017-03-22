@@ -13,7 +13,7 @@ export default class LimitItem extends Component {
   render() {
 
     return (
-       <span onClick={this.onClick}>{this.props.value}</span>
+       <span onClick={this.onClick} className={this.props.className}>{this.props.value}</span>
     );
   }
 
