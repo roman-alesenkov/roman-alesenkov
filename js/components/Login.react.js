@@ -9,6 +9,27 @@ export default class BaseUrl extends Component {
 
   constructor(props) {
     super(props);
+    this.state = this.getLoginState();
+  }
+
+  componentDidMount() {
+    LoginStore.addChangeListener(this.setLoginState);
+    LoginStore.fetchCurrentUser();
+  }
+
+  componentWillUnmount() {
+    LoginStore.removeChangeListener(this.setLoginState);
+  }
+
+  setLoginState = () => {
+    this.setState(this.getLoginState);
+  }
+
+  getLoginState = () => {
+    return {
+      currentUser: LoginStore.getCurrentUser() || {},
+      isLogged: LoginStore.isLogged() || false
+    };
   }
 
   onClick = () => {
@@ -16,12 +37,22 @@ export default class BaseUrl extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <button onClick={this.onClick}>
-          LOGIN WITH FB
-        </button>
-      </div>
-    );
+
+    if (this.state.isLogged) {
+      return (
+          <div>
+            {this.state.currentUser.name}
+          </div>
+      );
+    } else {
+      return (
+          <div>
+            <button onClick={this.onClick}>
+              LOGIN WITH FB
+            </button>
+          </div>
+      );
+    }
+
   }
 }

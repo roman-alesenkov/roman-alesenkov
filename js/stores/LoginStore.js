@@ -3,19 +3,40 @@ import { EventEmitter } from 'events';
 import LoginConstants from '../constants/LoginConstants';
 import assign from 'object-assign';
 import ConfigConstants from '../constants/ConfigConstants';
+import $ from 'jquery';
 
 let BASE_URL = ConfigConstants.BASE_URL;
 
 const CHANGE_EVENT = 'change';
 
 let isLogged = null;
+let currentUser = {
+  name: null,
+  id: null
+};
 
 const LoginStore = assign({}, EventEmitter.prototype, {
 
   loginWithFacebook() {
-    isLogged = true;
     window.location.href = BASE_URL + '/login/facebook';
     this.emitChange();
+  },
+
+  fetchCurrentUser() {
+    $.ajax({
+      url: BASE_URL + '/current-user',
+      withCredentials: true,
+      dataType: 'json',
+      success: function (data) {
+        isLogged = true;
+        currentUser = data;
+        this.emit(CHANGE_EVENT);
+      }.bind(this)
+    });
+  },
+
+  getCurrentUser () {
+    return currentUser;
   },
 
   logout() {

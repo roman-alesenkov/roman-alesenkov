@@ -7,6 +7,10 @@ import assign from 'object-assign';
 const CHANGE_EVENT = 'change';
 
 let isLogged = null;
+let currentUser = {
+  name: null,
+  id: null
+};
 
 const AuthStore = assign({}, EventEmitter.prototype, {
 
